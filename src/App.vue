@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    <ul>
-      <li v-for="(sort, index) in sorts" :key="index">
-        <router-link :to="sort.path">
-          {{ sort.name }}
-        </router-link>
-      </li>
-    </ul>
+    <div class="menu">
+      <ul class="menu-list">
+        <li v-for="(sort, index) in sorts" :key="index">
+          <router-link :to="sort.path">
+            {{ sort.name }}
+          </router-link>
+        </li>
+      </ul>
+    </div>
+    
     <router-view/>
   </div>
 </template>
@@ -20,6 +23,10 @@ export default {
         {
           name: "冒泡排序",
           path: "/bubble-sort"
+        },
+        {
+          name: "选择排序",
+          path: "/select-sort"
         }
       ]
     };
@@ -62,11 +69,5 @@ li {
   justify-content: center;
   position: absolute;
   transition: left 0.2s;
-}
-.datav-item.cur {
-  background-color: hsl(171, 100%, 41%);
-}
-.datav-item.ok {
-  background-color: hsl(48, 100%, 67%);
 }
 </style>

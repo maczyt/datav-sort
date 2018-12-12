@@ -28,9 +28,6 @@
             <p class="card-footer-item">
               <a :disabled="isStart" class="button is-primary" @click="handleStart">开始</a>
             </p>
-            <!-- <p class="card-footer-item">
-              <a class="button is-primary" @click="handleGenerate">暂停</a>
-            </p> -->
           </footer>
         </div>
       </div>
@@ -62,55 +59,64 @@ export default {
       return `[${this.sortData.join()}]`;
     }
   },
+  mixins: [{ methods: { sort } }],
   methods: {
     handleGenerate() {
       if (this.isShowData) return;
       this.sortData = utils.generateData(15);
       this.isShowData = true;
     },
+    async setMin(i) {
+      const htmls = this.$refs["datav-items"];
+      htmls.forEach(html => {
+        html.classList.remove("min");
+      });
+      htmls[i].classList.add("min");
+      await utils.wait(200);
+    },
+
+    async select(i, j) {
+      const htmls = this.$refs["datav-items"];
+      const left_i = htmls[i].offsetLeft;
+      const left_j = htmls[j].offsetLeft;
+
+      htmls[i].style.left = left_j + "px";
+      htmls[j].style.left = left_i + "px";
+      await utils.wait(200);
+      htmls[j].classList.add("ok");
+      await utils.wait(500);
+      [htmls[i], htmls[j]] = [htmls[j], htmls[i]];
+    },
+
+    async next(i) {
+      const htmls = this.$refs["datav-items"];
+      try {
+        htmls[i - 1].classList.remove("cur");
+      } catch (e) {}
+      htmls[i].classList.add("cur");
+      await utils.wait(500);
+    },
+
     async handleStart(event) {
       if (event.target.getAttribute("disabled")) {
         return;
       }
       this.isStart = true;
       const newData = this.sortData.slice(0); // fix 数组改变导致vnode重渲染
-      await sort(newData, this.frameAnimate, this.okAnimate);
+      await this.sort(newData, this.frameAnimate, this.okAnimate);
       this.newData = newData;
-    },
-    async frameAnimate(data, i, j) {
-      const htmls = this.$refs["datav-items"];
-      if (htmls) {
-        htmls[i].classList.add("cur");
-        htmls[j].classList.add("cur");
-        await utils.wait(50);
-
-        if (data[i] > data[j]) {
-          const left_i = htmls[i].offsetLeft;
-          const left_j = htmls[j].offsetLeft;
-
-          htmls[i].style.left = left_j + "px";
-          htmls[j].style.left = left_i + "px";
-          await utils.wait(200);
-          [htmls[i], htmls[j]] = [htmls[j], htmls[i]];
-        }
-
-        // await utils.wait(1000);
-        await utils.wait(500);
-        htmls[i].classList.remove("cur");
-        htmls[j].classList.remove("cur");
-      }
-    },
-
-    async okAnimate(i) {
-      const htmls = this.$refs["datav-items"];
-      htmls[i].classList.add("ok");
-      await utils.wait(50);
     }
   }
 };
 </script>
 
 <style scoped>
+.datav-item {
+  transition: background 0.2s, left 0.2s;
+}
+.datav-item.min {
+  background-color: hsl(348, 100%, 61%);
+}
 .datav-item.cur {
   background-color: hsl(171, 100%, 41%);
 }
