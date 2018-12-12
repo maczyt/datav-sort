@@ -92,7 +92,9 @@ export default {
       const htmls = this.$refs["datav-items"];
       try {
         htmls[i - 1].classList.remove("cur");
-      } catch (e) {}
+      } catch (e) {
+        //
+      }
       htmls[i].classList.add("cur");
       await utils.wait(500);
     },
@@ -103,7 +105,7 @@ export default {
       }
       this.isStart = true;
       const newData = this.sortData.slice(0); // fix 数组改变导致vnode重渲染
-      await this.sort(newData, this.frameAnimate, this.okAnimate);
+      await this.sort(newData);
       this.newData = newData;
     }
   }

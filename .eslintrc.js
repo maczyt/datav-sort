@@ -34,6 +34,7 @@ module.exports = {
     'no-console': 0,
     'camelcase': 0,
     'prefer-template': 0,
+    'arrow-parens': 0,
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       js: 'never',

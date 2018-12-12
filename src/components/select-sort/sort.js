@@ -1,4 +1,4 @@
-export default async function SelectSort(data, frameAnimate, okAnimate) {
+export default async function SelectSort(data) {
   let i;
   let j;
   const len = data.length;
@@ -17,15 +17,6 @@ export default async function SelectSort(data, frameAnimate, okAnimate) {
 
     await this.select(i, minIndex);
     [data[i], data[minIndex]] = [data[minIndex], data[i]];
-
-    // for (j = 0; j < len - i - 1; j++) {
-    //   await frameAnimate(data, j, j + 1);
-    //   if (data[j] > data[j + 1]) {
-    //     [data[j], data[j + 1]] = [data[j + 1], data[j]];
-    //   }
-    // }
-    // okAnimate(j);
-    // 最好情况优化
   }
 
   return data;
