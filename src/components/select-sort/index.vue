@@ -84,19 +84,22 @@ export default {
       htmls[j].style.left = left_i + "px";
       await utils.wait(200);
       htmls[j].classList.add("ok");
-      await utils.wait(500);
+      await utils.wait(300);
       [htmls[i], htmls[j]] = [htmls[j], htmls[i]];
     },
 
     async next(i) {
       const htmls = this.$refs["datav-items"];
       try {
-        htmls[i - 1].classList.remove("cur");
+        htmls.forEach(html => {
+          html.classList.remove("cur");
+        });
+        // htmls[i - 1].classList.remove("cur");
       } catch (e) {
         //
       }
       htmls[i].classList.add("cur");
-      await utils.wait(500);
+      await utils.wait(300);
     },
 
     async handleStart(event) {
